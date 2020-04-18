@@ -22,19 +22,19 @@ fi
 EXIT_VAL=0
 
 while read -r FILENAME; do
-    RETURN_VAL=$(./uncrustify-uncrustify-0.67/build/uncrustify --check"$CONFIG" -f "$FILENAME" -l CPP)
+    RETURN_VAL=$(./uncrustify-uncrustify-0.70.1/build/uncrustify --check"$CONFIG" -f "$FILENAME" -l CPP)
     if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
         EXIT_VAL=$RETURN_VAL
     fi
 
     if [[ -n "$INPUT_REMOVESTD" ]] && [[ "$INPUT_REMOVESTD" == "true" ]]; then
         # Counts occurrences of std:: that aren't in comments and have a leading space (except if it's inside pointer brackets, eg: <std::thing>)
-        RETURN_VAL=$(sed -n '/^.*\/\/.*/!s/ std:://p; /^.* std::.*\/\//s/ std:://p; /^.*\<.*std::.*\>/s/std:://p;' "$FILENAME" | wc -l);
+        RETURN_VAL=$(sed -n '/^.*\/\/.*/!s/ std:://p; /^.* std::.*\/\//s/ std:://p; /^.*\<.*std::.*\>/s/std:://p;' "$FILENAME" | wc -l)
         if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
             EXIT_VAL=$RETURN_VAL
         fi
     fi
-done < <(git diff --name-status master..."$GITHUB_SHA" -- '*.cpp' '*.h' '*.hpp' '*.cxx' | grep "^[A|M] | awk '{ print $2 }' ")
+done < <(git diff --name-status master... -- '*.cpp' '*.h' '*.hpp' '*.cxx' | grep "^[A|M]" | awk '{ print $2 }' )
 
 if [[ "$EXIT_VAL" -gt 0 ]]; then
     echo "Style is wrong, run 'vssh ./style.sh' from your Mac, or just './style.sh' from your VM to fix it."
