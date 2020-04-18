@@ -3,6 +3,8 @@ FROM debian:latest
 COPY entrypoint.sh /entrypoint.sh
 COPY default.cfg /default.cfg
 
+RUN apt-get update
+RUN apt-get -y install curl
 RUN chmod +x entrypoint.sh
 RUN curl -o uncrustify-0.67.tar.gz https://github.com/uncrustify/uncrustify/archive/uncrustify-0.67.tar.gz
 RUN tar -xf uncrustify-0.67.tar.gz
