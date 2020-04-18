@@ -27,6 +27,7 @@ echo $CONFIG
 EXIT_VAL=0
 
 while read -r FILENAME; do
+    echo "$CONFIG"
     RETURN_VAL=$(uncrustify --check "$CONFIG" -f "$FILENAME" -l CPP)
     if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
         EXIT_VAL=$RETURN_VAL
@@ -40,9 +41,5 @@ while read -r FILENAME; do
         fi
     fi
 done < <(git diff --name-status --diff-filter=AM origin/master..."$BRANCH_NAME" -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
-
-if [[ "$EXIT_VAL" -gt 0 ]]; then
-    echo "Style is wrong, run 'vssh ./style.sh' from your Mac, or just './style.sh' from your VM to fix it."
-fi
 
 exit "$EXIT_VAL"
