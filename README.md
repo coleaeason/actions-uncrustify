@@ -18,7 +18,7 @@ on: [ pull_request ]
 jobs:
   cpp_style_check:
     runs-on: ubuntu-latest
-    name: Check ++ Style
+    name: Check C++ Style
     steps:
     - name: Checkout this commit
       uses: actions/checkout@v2
@@ -33,7 +33,7 @@ on: [ pull_request ]
 jobs:
   cpp_style_check:
     runs-on: ubuntu-latest
-    name: Check ++ Style
+    name: Check C++ Style
     steps:
     - name: Checkout this commit
       uses: actions/checkout@v2
@@ -50,7 +50,7 @@ on: [ pull_request ]
 jobs:
   cpp_style_check:
     runs-on: ubuntu-latest
-    name: Check ++ Style
+    name: Check C++ Style
     steps:
     - name: Checkout this commit
       uses: actions/checkout@v2
