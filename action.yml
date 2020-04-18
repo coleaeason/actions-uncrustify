@@ -1,0 +1,16 @@
+name: 'C++ Style Check'
+description: 'Runs C++ style check with Uncrustify'
+author: 'coleaeason'
+inputs: 
+  configPath:
+    description: 'Alternate configuration file to use'
+    required: false
+  checkSTD:
+    description: 'Whether or not files should be checked for std:: usage'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+    icon: 'edit-3'
+    color: 'green'
