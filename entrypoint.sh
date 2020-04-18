@@ -2,8 +2,7 @@
 set -e
 
 cd "$GITHUB_WORKSPACE"
-pwd
-git status
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 
 # Maintain support for uncrustify's ENV variable if it's passed in 
 # from the actions file. Otherwise the actions file could have the
@@ -36,7 +35,7 @@ while read -r FILENAME; do
             EXIT_VAL=$RETURN_VAL
         fi
     fi
-done < <(git diff --name-status master... -- '*.cpp' '*.h' '*.hpp' '*.cxx' | grep "^[A|M]" | awk '{ print $2 }' )
+done < <(git diff --name-status --diff-filter=AM origin/master..."$BRANCH_NAME" -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
 if [[ "$EXIT_VAL" -gt 0 ]]; then
     echo "Style is wrong, run 'vssh ./style.sh' from your Mac, or just './style.sh' from your VM to fix it."
