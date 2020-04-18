@@ -2,6 +2,8 @@
 set -e
 
 cd "$GITHUB_WORKSPACE"
+pwd
+git status
 
 # Maintain support for uncrustify's ENV variable if it's passed in 
 # from the actions file. Otherwise the actions file could have the
