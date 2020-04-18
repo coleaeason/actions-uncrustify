@@ -27,7 +27,7 @@ echo $CONFIG
 EXIT_VAL=0
 
 while read -r FILENAME; do
-    RETURN_VAL=$(uncrustify --check"$CONFIG" -f "$FILENAME" -l CPP)
+    RETURN_VAL=$(uncrustify --check "$CONFIG" -f "$FILENAME" -l CPP)
     if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
         EXIT_VAL=$RETURN_VAL
     fi
