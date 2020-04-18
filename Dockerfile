@@ -13,5 +13,6 @@ RUN mkdir build
 WORKDIR /uncrustify-uncrustify-0.70.1/build
 RUN cmake ..
 RUN cmake --build .
+RUN cp uncrustify /usr/local/bin && chmod +x /usr/local/bin/uncrustify
 
 ENTRYPOINT ["/entrypoint.sh"]
