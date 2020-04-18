@@ -20,26 +20,21 @@ else
     CONFIG=" -c /default.cfg"
 fi
 
-echo $INPUT_CHECKSTD
-echo $INPUT_CONFIGPATH
-echo $CONFIG
-
 EXIT_VAL=0
 
 while read -r FILENAME; do
-    echo "$CONFIG"
-    RETURN_VAL=$(uncrustify --check "$CONFIG" -f "$FILENAME" -l CPP)
+    RETURN_VAL=$(uncrustify --check "${CONFIG}" -f "${FILENAME}" -l CPP)
     if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
         EXIT_VAL=$RETURN_VAL
     fi
 
     if [[ -n "$INPUT_CHECKSTD" ]] && [[ "$INPUT_CHECKSTD" == "true" ]]; then
         # Counts occurrences of std:: that aren't in comments and have a leading space (except if it's inside pointer brackets, eg: <std::thing>)
-        RETURN_VAL=$(sed -n '/^.*\/\/.*/!s/ std:://p; /^.* std::.*\/\//s/ std:://p; /^.*\<.*std::.*\>/s/std:://p;' "$FILENAME" | wc -l)
+        RETURN_VAL=$(sed -n '/^.*\/\/.*/!s/ std:://p; /^.* std::.*\/\//s/ std:://p; /^.*\<.*std::.*\>/s/std:://p;' "${FILENAME}" | wc -l)
         if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
             EXIT_VAL=$RETURN_VAL
         fi
     fi
-done < <(git diff --name-status --diff-filter=AM origin/master..."$BRANCH_NAME" -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+done < <(git diff --name-status --diff-filter=AM origin/master..."${BRANCH_NAME}" -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
 exit "$EXIT_VAL"
