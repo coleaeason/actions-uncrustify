@@ -27,7 +27,7 @@ EXIT_VAL=0
 while read -r FILENAME; do
     FAILED="false"
     # Failure code is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
-    OUT=$(uncrustify --check${CONFIG} -f ${FILENAME} -l CPP 2> >(grep ^FAIL| awk '{ $2 }'))
+    OUT=$(uncrustify --check${CONFIG} -f ${FILENAME} -l CPP 2> >(grep ^FAIL| awk '{ $2 }') >/dev/null)
     RETURN_VAL=$?
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo "$OUT failed style checks."
