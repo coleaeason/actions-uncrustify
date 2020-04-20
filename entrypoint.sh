@@ -26,12 +26,15 @@ EXIT_VAL=0
 
 while read -r FILENAME; do
     FAILED="false"
-    OUT=$(uncrustify --check${CONFIG} -f ${FILENAME} -l CPP | grep ^FAIL | awk '{ printf "%s failed style checks.\n", $2}')
-    RETURN_VAL=${PIPESTATUS[0]}
-    if [[ $RETURN_VAL -gt $EXIT_VAL ]]; then
-        echo $OUT
+    # Failure code is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
+    OUT=$(uncrustify --check${CONFIG} -f ${FILENAME} -l CPP 2> >(grep ^FAIL| awk '{ $2 }'))
+    RETURN_VAL=$?
+    if [[ $RETURN_VAL -gt 0 ]]; then
+        echo "$OUT failed style checks."
         FAILED="true"
         EXIT_VAL=$RETURN_VAL
+    else
+        echo "$OUT passed style checks."
     fi
 
     if [[ -n "$INPUT_CHECKSTD" ]] && [[ "$INPUT_CHECKSTD" == "true" ]]; then
