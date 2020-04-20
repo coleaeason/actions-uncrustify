@@ -9,16 +9,16 @@ BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 # from the actions file. Otherwise the actions file could have the
 # configPath argument set
 if [[ -z $UNCRUSTIFY_CONFIG ]] && [[ -z $INPUT_CONFIGPATH ]]; then
-    CONFIG=" -c /default.cfg"
+    CONFIG="-c /default.cfg"
 elif [[ -z $UNCRUSTIFY_CONFIG ]] && [[ -n $INPUT_CONFIGPATH ]]; then
-    CONFIG=" -c $INPUT_CONFIGPATH"
+    CONFIG="-c $INPUT_CONFIGPATH"
 # If both are set, use the command line flag.
 elif [[ -n $UNCRUSTIFY_CONFIG ]] && [[ -n $INPUT_CONFIGPATH ]]; then
-    CONFIG=" -c $INPUT_CONFIGPATH"
+    CONFIG="-c $INPUT_CONFIGPATH"
 elif [[ -n $UNCRUSTIFY_CONFIG ]] && [[ -z $INPUT_CONFIGPATH ]]; then
     CONFIG=""
 else
-    CONFIG=" -c /default.cfg"
+    CONFIG="-c /default.cfg"
 fi
 
 EXIT_VAL=0
