@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit on any error and show execution of all commands for debugging if something goes wrong
-set -ex
+set -e
 
 cd "$GITHUB_WORKSPACE"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
@@ -33,7 +33,7 @@ while read -r FILENAME; do
     set +e
     OUT=$(uncrustify --check${CONFIG} -f ${FILENAME} -l CPP 2>&1 | grep -e ^FAIL -e ^PASS | awk '{ print $2 }'; exit ${PIPESTATUS[0]})
     RETURN_VAL=$?
-    
+
     # Stop allowing failures again
     set -e 
 
@@ -48,10 +48,8 @@ while read -r FILENAME; do
     if [[ -n "$INPUT_CHECKSTD" ]] && [[ "$INPUT_CHECKSTD" == "true" ]]; then
         # Counts occurrences of std:: that aren't in comments and have a leading space (except if it's inside pointer brackets, eg: <std::thing>)
         RETURN_VAL=$(sed -n '/^.*\/\/.*/!s/ std:://p; /^.* std::.*\/\//s/ std:://p; /^.*\<.*std::.*\>/s/std:://p;' "${FILENAME}" | wc -l)
-        if [[ $RETURN_VAL -gt $EXIT_VAL ]]; then
-            if [[ "$FAILED" != "true" ]]; then
-                echo "${FILENAME} failed style checks."
-            fi
+        if [[ $RETURN_VAL -gt 0 ]] && [[ "$FAILED" != "true" ]]; then
+            echo "${FILENAME} failed style checks."
             EXIT_VAL=$RETURN_VAL
         fi
     fi
