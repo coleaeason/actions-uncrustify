@@ -32,11 +32,11 @@ while read -r FILENAME; do
     # Allow failures here so we can capture exit status
     set +e
     OUT=$(uncrustify --check${CONFIG} -f ${FILENAME} -l CPP 2>&1 | grep -e ^FAIL -e ^PASS | awk '{ print $2 }'; exit ${PIPESTATUS[0]})
+    RETURN_VAL=$?
     
     # Stop allowing failures again
     set -e 
-    
-    RETURN_VAL=$?
+
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo "$OUT failed style checks."
         FAILED="true"
