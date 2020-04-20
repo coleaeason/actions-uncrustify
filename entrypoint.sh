@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x 
 
 cd "$GITHUB_WORKSPACE"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
