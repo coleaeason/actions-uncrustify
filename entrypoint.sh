@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 set -x 
 
@@ -24,7 +24,7 @@ fi
 EXIT_VAL=0
 
 while read -r FILENAME; do
-    RETURN_VAL=$(uncrustify --check "${CONFIG}" -f "${FILENAME}" -l CPP)
+    RETURN_VAL=$(uncrustify --check ${CONFIG} -f ${FILENAME} -l CPP)
     if [[ "$RETURN_VAL" -gt "$EXIT_VAL" ]]; then
         EXIT_VAL=$RETURN_VAL
     fi
@@ -36,6 +36,6 @@ while read -r FILENAME; do
             EXIT_VAL=$RETURN_VAL
         fi
     fi
-done < <(git diff --name-status --diff-filter=AM origin/master..."${BRANCH_NAME}" -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+done < <(git diff --name-status --diff-filter=AM origin/master...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
-exit "$EXIT_VAL"
+exit $EXIT_VAL
