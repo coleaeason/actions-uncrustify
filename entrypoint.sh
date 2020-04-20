@@ -1,6 +1,7 @@
-#!/bin/sh
-set -e
-set -x 
+#!/bin/bash
+
+# Exit on any error and show execution of all commands for debugging if something goes wrong
+set -ex
 
 cd "$GITHUB_WORKSPACE"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
