@@ -6,6 +6,10 @@ set -e
 cd "$GITHUB_WORKSPACE"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 
+RED="\u001b[31m"
+GREEN="\u001b[32m"
+RESET="\u001b[0m"
+
 # Maintain support for uncrustify's ENV variable if it's passed in 
 # from the actions file. Otherwise the actions file could have the
 # configPath argument set
@@ -38,18 +42,18 @@ while read -r FILENAME; do
     set -e 
 
     if [[ $RETURN_VAL -gt 0 ]]; then
-        echo "$OUT failed style checks."
+        echo -e "${RED}${OUT} failed style checks.${RESET}"
         FAILED="true"
         EXIT_VAL=$RETURN_VAL
     else
-        echo "$OUT passed style checks."
+        echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
 
     if [[ -n "$INPUT_CHECKSTD" ]] && [[ "$INPUT_CHECKSTD" == "true" ]]; then
         # Counts occurrences of std:: that aren't in comments and have a leading space (except if it's inside pointer brackets, eg: <std::thing>)
         RETURN_VAL=$(sed -n '/^.*\/\/.*/!s/ std:://p; /^.* std::.*\/\//s/ std:://p; /^.*\<.*std::.*\>/s/std:://p;' "${FILENAME}" | wc -l)
         if [[ $RETURN_VAL -gt 0 ]] && [[ "$FAILED" != "true" ]]; then
-            echo "${FILENAME} failed style checks."
+        echo -e "${RED}${OUT} failed style checks.${RESET}"
             EXIT_VAL=$RETURN_VAL
         fi
     fi
