@@ -42,20 +42,3 @@ jobs:
       with: 
         configPath: 'myConfig.cfg'
 ```
-
-Checks for usaged of `std::`: 
-```yml
-on: [ pull_request ]
-
-jobs:
-  cpp_style_check:
-    runs-on: ubuntu-latest
-    name: Check C++ Style
-    steps:
-    - name: Checkout this commit
-      uses: actions/checkout@v2
-    - name: Run style checks
-      uses: coleaeason/actions-uncrustify@v1
-      with: 
-        checkSTD: 'true'
-```

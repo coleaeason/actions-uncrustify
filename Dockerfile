@@ -4,7 +4,7 @@ COPY entrypoint.sh /entrypoint.sh
 COPY default.cfg /default.cfg
 
 RUN apt-get update
-RUN apt-get -y install curl cmake build-essential python3 git
+RUN apt-get -y install curl cmake build-essential python3 git colordiff
 RUN chmod +x entrypoint.sh
 RUN curl -L -o uncrustify-0.70.1.tar.gz https://github.com/uncrustify/uncrustify/archive/uncrustify-0.70.1.tar.gz
 RUN tar -xzf uncrustify-0.70.1.tar.gz
