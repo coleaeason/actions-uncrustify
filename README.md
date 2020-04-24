@@ -1,5 +1,5 @@
 # Uncrustify C++ Github Action
-Runs an (uncrustify)[https://github.com/uncrustify/uncrustify] config against C++ implementation and header files in a given repo. 
+Runs an [uncrustify](https://github.com/uncrustify/uncrustify) config against C++ implementation and header files in a given repo. 
 
 The script looks for the following file endings:
 * .cpp
