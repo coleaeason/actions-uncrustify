@@ -9,7 +9,7 @@ The script looks for the following file endings:
 
 Only runs on files that have been added or modified in a given commit.
 
-## Example configuations
+## Example configurations
 
 Basic: 
 ```yml
@@ -26,7 +26,7 @@ jobs:
       uses: coleaeason/actions-uncrustify@v1
 ```
 
-Use a specific configuartion file via input: 
+Use a specific configuration file via input: 
 ```yml
 on: [ pull_request ]
 
