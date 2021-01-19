@@ -5,6 +5,7 @@ set -e
 
 cd "$GITHUB_WORKSPACE"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 
 RED="\u001b[31m"
 GREEN="\u001b[32m"
@@ -48,6 +49,6 @@ while read -r FILENAME; do
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
-done < <(git diff --name-status --diff-filter=AM origin/master...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+done < <(git diff --name-status --diff-filter=AM origin/${DEFAULT_BRANCH}...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
 
 exit $EXIT_VAL
