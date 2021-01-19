@@ -1,11 +1,15 @@
 #!/bin/bash
 
-# Exit on any error and show execution of all commands for debugging if something goes wrong
+# Exit on any error
 set -e
 
 cd "$GITHUB_WORKSPACE"
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+DEFAULT_BRANCH="master"
+
+if [[ -n $INPUT_DEFAULTBRANCH ]]; then
+    DEFAULT_BRANCH=$INPUT_DEFAULTBRANCH
+fi
 
 RED="\u001b[31m"
 GREEN="\u001b[32m"
