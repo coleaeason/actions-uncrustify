@@ -11,7 +11,7 @@ RED="\u001b[31m"
 GREEN="\u001b[32m"
 RESET="\u001b[0m"
 
-# Maintain support for uncrustify's ENV variable if it's passed in 
+# Maintain support for uncrustify's ENV variable if it's passed in
 # from the actions file. Otherwise the actions file could have the
 # configPath argument set
 if [[ -z $UNCRUSTIFY_CONFIG ]] && [[ -z $INPUT_CONFIGPATH ]]; then
@@ -40,7 +40,7 @@ while read -r FILENAME; do
     RETURN_VAL=$?
 
     # Stop allowing failures again
-    set -e 
+    set -e
 
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo -e "${RED}${OUT} failed style checks.${RESET}"
