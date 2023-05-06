@@ -4,14 +4,12 @@
 set -e
 
 cd "$GITHUB_WORKSPACE"
-BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 
 RED="\u001b[31m"
 GREEN="\u001b[32m"
 RESET="\u001b[0m"
 
-# Maintain support for uncrustify's ENV variable if it's passed in 
+# Maintain support for uncrustify's ENV variable if it's passed in
 # from the actions file. Otherwise the actions file could have the
 # configPath argument set
 if [[ -z $UNCRUSTIFY_CONFIG ]] && [[ -z $INPUT_CONFIGPATH ]]; then
@@ -29,7 +27,14 @@ fi
 
 EXIT_VAL=0
 
-while read -r FILENAME; do
+if [[ -z $INCLUDE_REGEX ]]; then
+    INCLUDE_REGEX='^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$)))$'
+fi
+
+# All files improperly formatted will be printed to the output.
+MODIFIED_FILE_FILENAMES=$(find . -name .git -prune -o -regextype posix-egrep -regex "$INCLUDE_REGEX" -print)
+
+for FILENAME in $MODIFIED_FILE_FILENAMES; do
     TMPFILE="${FILENAME}.tmp"
     # Failure is passed to stderr so we need to redirect that to grep so we can pretty print some useful output instead of the deafult
     # Success is passed to stdout, so we need to redirect that separately so we can capture either case.
@@ -40,7 +45,7 @@ while read -r FILENAME; do
     RETURN_VAL=$?
 
     # Stop allowing failures again
-    set -e 
+    set -e
 
     if [[ $RETURN_VAL -gt 0 ]]; then
         echo -e "${RED}${OUT} failed style checks.${RESET}"
@@ -49,6 +54,6 @@ while read -r FILENAME; do
     else
         echo -e "${GREEN}${OUT} passed style checks.${RESET}"
     fi
-done < <(git diff --name-status --diff-filter=AM origin/${DEFAULT_BRANCH}...${BRANCH_NAME} -- '*.cpp' '*.h' '*.hpp' '*.cxx' | awk '{ print $2 }' )
+done
 
 exit $EXIT_VAL
